@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -45,7 +44,6 @@ abstract class BaseService
     {
         $this->setModel();
         $this->query = $this->model->newQuery();
-        $this->request = request();
     }
 
     abstract protected function setModel();
@@ -55,17 +53,14 @@ abstract class BaseService
      *
      * @param array $relations
      */
-    public function index(array $relations = [])
+    public function index(Request $r)
     {
-//        if ($relations && count($relations)) {
-//            $this->query->with($relations);
-//        }
         if (method_exists($this, '_addFilter')) {
             $this->_addFilter();
         }
-        $this->_addDefaultFilter();
-        if($this->request->input('limit')) {
-            return $this->query->paginate($this->request->input('limit', Common::PAGING_LIMIT));
+        $this->_addDefaultFilter($r);
+        if ($r->input('limit')) {
+            return $this->query->paginate($r->input('limit', Common::PAGING_LIMIT));
         } else return $this->query->get();
     }
 
@@ -106,10 +101,9 @@ abstract class BaseService
      * @return Model|bool
      * @throws Exception
      */
-    public function store(array $attributes = [])
+    public function store(array $attributes = [], Request $r)
     {
-        $data = count($attributes) ? $attributes : $this->request->input();
-        $data['images'] = $this->_getImagePath();
+        $data = count($attributes) ? $attributes : $r->input();
 
         $parent = $this->query->create($data);
         $relations = [];
@@ -161,9 +155,9 @@ abstract class BaseService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function _addDefaultFilter()
+    private function _addDefaultFilter(Request $r)
     {
-        foreach ($this->request->all() as $key => $value) {
+        foreach ($r->all() as $key => $value) {
             if (preg_match('/(.*)_like$/', $key, $matches) && ($value || is_numeric($value))) {
                 $keyword = UtilHelper::normalizeKeywordForSearch($value);
                 $this->query->whereRaw("LOWER({$matches[1]}) LIKE BINARY LOWER('%{$keyword}%')");
@@ -179,7 +173,7 @@ abstract class BaseService
                 $this->query->orderBy($sortParams[0], $sortParams[1] ?? Common::PAGING_ORDER_TYPE);
             }
         }
-        if (!$this->request->get('sort')) {
+        if (!$r->get('sort')) {
             $this->query->orderBy(Common::PAGING_ORDER_BY, Common::PAGING_ORDER_TYPE)->orderByDesc('id');
         }
     }
@@ -225,19 +219,12 @@ abstract class BaseService
      * @param array $models
      * @return array
      */
-    private function _parseIds(array $models): array {
+    private function _parseIds(array $models): array
+    {
         $ids = [];
         foreach ($models as $model) {
             $ids[] = $model instanceof Model ? $model->getKey() : $model;
         }
         return $ids;
-    }
-
-    protected function _getImagePath() {
-        if($this->request->hasFile('images')) {
-            $image = $this->request->file('images');
-            return $image->storeAs('images', time().$image->getClientOriginalName());
-        }
-        return null;
     }
 }

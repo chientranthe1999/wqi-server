@@ -37,7 +37,8 @@ class Controller extends BaseController
      * @throws ArrayWithMixedKeysException
      * @throws MissingConfigurationKeyException
      */
-    public function respond($data = null, $msg = null): Response {
+    public function respond($data = null, $msg = null): Response
+    {
         return ResponseBuilder::asSuccess()->withData($data)->withMessage($msg)->build();
     }
 
@@ -49,7 +50,8 @@ class Controller extends BaseController
      * @throws ArrayWithMixedKeysException
      * @throws MissingConfigurationKeyException
      */
-    public function respondWithError($api_code, $http_code, $message = ''): Response {
+    public function respondWithError($api_code, $http_code, $message = ''): Response
+    {
         return ResponseBuilder::asError($api_code)->withMessage($message)->withHttpCode($http_code)->build();
     }
 
@@ -61,7 +63,8 @@ class Controller extends BaseController
      * @throws ConfigurationNotFoundException
      * @throws IncompatibleTypeException
      */
-    public function respondBadRequest($api_code): Response {
+    public function respondBadRequest($api_code): Response
+    {
         return $this->respondWithError($api_code, Response::HTTP_BAD_REQUEST);
     }
 
@@ -73,7 +76,8 @@ class Controller extends BaseController
      * @throws IncompatibleTypeException
      * @throws ConfigurationNotFoundException
      */
-    public function respondUnAuthorizedRequest($api_code): Response {
+    public function respondUnAuthorizedRequest($api_code): Response
+    {
         return $this->respondWithError($api_code, Response::HTTP_UNAUTHORIZED);
     }
 
@@ -85,7 +89,8 @@ class Controller extends BaseController
      * @throws IncompatibleTypeException
      * @throws ConfigurationNotFoundException
      */
-    public function respondNotFound($message = ''): Response {
+    public function respondNotFound($message = ''): Response
+    {
         return $this->respondWithError(ApiCodes::HTTP_NOT_FOUND, Response::HTTP_NOT_FOUND, $message);
     }
 
@@ -97,14 +102,15 @@ class Controller extends BaseController
      * @throws IncompatibleTypeException
      * @throws ConfigurationNotFoundException
      */
-    public function respondForbidden(): Response {
+    public function respondForbidden(): Response
+    {
         return $this->respondWithError(ApiCodes::FORBIDDEN_EXCEPTION, Response::HTTP_FORBIDDEN);
     }
 
-    public function index() : Response
+    public function index(Request $r): Response
     {
         try {
-            return $this->respond($this->service->index());
+            return $this->respond($this->service->index($r));
         } catch (\Exception $e) {
             return $this->respondWithError(ApiCodes::SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
@@ -122,7 +128,7 @@ class Controller extends BaseController
      * @throws NotIntegerException
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $r) : Response
+    public function store(Request $r): Response
     {
         try {
             if (method_exists($this, '_addValidate')) {

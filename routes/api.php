@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +17,39 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::get('/', function () {
     return response()->json(['status' => 'api ready!']);
 });
 
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+
+// TODO: Handle authen api failure
+Route::middleware('auth:api')->group(function () {
+    Route::get('me', [AuthController::class, 'userDetail']);
+
+    Route::prefix('devices')->group(function () {
+        Route::get('/', [DeviceController::class, 'index']);
+        Route::post('/', [DeviceController::class, 'store']);
+        Route::get('/{id}', [DeviceController::class, 'show']);
+        Route::put('/{id}', [DeviceController::class, 'update']);
+        Route::delete('/{id}', [DeviceController::class, 'destroy']);
+    });
+
+    Route::prefix('articles')->group(function () {
+        Route::get('/', [ArticleController::class, 'index']);
+        Route::post('/', [ArticleController::class, 'store']);
+        Route::get('/{id}', [ArticleController::class, 'show']);
+        Route::put('/{id}', [ArticleController::class, 'update']);
+        Route::delete('/{id}', [ArticleController::class, 'destroy']);
+    });
+
+    Route::prefix('infors')->group(function () {
+        Route::get('/', [InforController::class, 'index']);
+        Route::post('/', [InforController::class, 'store']);
+        Route::get('/{id}', [InforController::class, 'show']);
+        Route::put('/{id}', [InforController::class, 'update']);
+        Route::delete('/{id}', [InforController::class, 'destroy']);
+    });
+});

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Constants;
 
 class Common
@@ -12,4 +13,6 @@ class Common
     const ACTIVE = 1;
     const DISABLE = 2;
 
+    const ROLE_ADMIN = 0;
+    const ROLE_USER = 1;
 }
