@@ -29,11 +29,11 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    public function attributes()
-    {
-        return [
-            'email' => __('attribute.email'),
-            'password' => __('attribute.password'),
-        ];
-    }
+    // public function attributes()
+    // {
+    // return [
+    //     'email' => __('attribute.email'),
+    //     'password' => __('attribute.password'),
+    // ];
+    // }
 }

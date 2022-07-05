@@ -135,7 +135,7 @@ class Controller extends BaseController
                 $this->_addValidate($r);
             }
             DB::beginTransaction();
-            $result = $this->service->store();
+            $result = $this->service->store([], $r);
             DB::commit();
             return $this->respond($result);
         } catch (\Exception $e) {

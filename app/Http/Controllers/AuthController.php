@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants\ApiCodes;
+use App\Constants\Common;
 use App\Services\AuthService;
 use App\Http\Requests\LoginRequest;
 use Laravel\Passport\TokenRepository;
@@ -46,8 +47,8 @@ class AuthController extends Controller
 
         if ($result) {
             return $this->respond([
-                'token' => $result,
-                'messae' => 'Login successfullly'
+                'item' => $result,
+                'message' => 'Login successfullly'
             ]);
         }
 
@@ -62,6 +63,48 @@ class AuthController extends Controller
     public function userDetail()
     {
         return $this->respond($this->service->userDetail());
+    }
+
+    /**
+     * Update user information
+     */
+
+    public function updateUser(Request $r)
+    {
+        return $this->respond($this->service->updateUser($r));
+    }
+
+
+
+    /**
+     * disable user
+     */
+
+    public function disableUser(Request $r)
+    {
+        $userRole = Auth::user()->role;
+
+        if ($userRole != Common::ROLE_ADMIN) {
+            return $this->respondWithError(ApiCodes::FORBIDDEN_EXCEPTION, ApiCodes::FORBIDDEN_EXCEPTION, 'You don\'t have permission to do this');
+        }
+
+        return $this->respond($this->service->disableUser($r));
+    }
+
+
+    /**
+     * active user
+     */
+
+    public function activeUser(Request $r)
+    {
+        // TODO: Move to middleware
+        $userRole = Auth::user()->role;
+
+        if ($userRole != Common::ROLE_ADMIN) {
+            return $this->respondWithError(ApiCodes::FORBIDDEN_EXCEPTION, ApiCodes::FORBIDDEN_EXCEPTION, 'You don\'t have permission to do this');
+        }
+        return $this->respond($this->service->activeUser($r));
     }
 
     public function logout()

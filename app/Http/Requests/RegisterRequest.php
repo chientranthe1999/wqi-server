@@ -27,14 +27,15 @@ class RegisterRequest extends FormRequest
             'name' => ['required', 'string'],
             'email' => ['required', 'email'],
             'password' => 'required',
+            'phone' => ['required', 'string'],
         ];
     }
 
-    public function attributes()
-    {
-        return [
-            'email' => __('attribute.email'),
-            'password' => __('attribute.password'),
-        ];
-    }
+    // public function attributes()
+    // {
+    //     return [
+    //         'email' => __('attribute.email'),
+    //         'password' => __('attribute.password'),
+    //     ];
+    // }
 }

@@ -41,8 +41,11 @@ class AuthService extends BaseService
     public function login(Request $r)
     {
         $input = $r->only(['email', 'password']);
-        if (Auth::attempt($input)) {
-            return Auth::user()->createToken('passport_token')->accessToken;
+        if (Auth::attempt($input) && Auth::user()->status == Common::ACTIVE) {
+            return array_merge(
+                ['token' => Auth::user()->createToken('passport_token')->accessToken],
+                ['infors' => Auth::user()]
+            );
         }
 
         return false;

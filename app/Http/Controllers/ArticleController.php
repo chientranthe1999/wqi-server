@@ -12,4 +12,10 @@ class ArticleController extends Controller
     {
         parent::__construct($service);
     }
+
+    public function show($id)
+    {
+        $result = $this->service->show($id, ['users:id,name']);
+        return $this->respond($result);
+    }
 }

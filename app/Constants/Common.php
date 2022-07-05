@@ -11,7 +11,7 @@ class Common
     const SQL_SPECIAL_CHARACTERS = ["\\", "'", "\"", "%", "_"];
 
     const ACTIVE = 1;
-    const DISABLE = 2;
+    const DISABLE = 0;
 
     const ROLE_ADMIN = 0;
     const ROLE_USER = 1;

@@ -15,12 +15,12 @@ class CreateInforsTable extends Migration
     {
         Schema::create('infors', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('device_Id');
+            $table->unsignedBigInteger('device_id');
             $table->string('ph', 10);
             $table->string('temperature', 10);
             $table->string('turbidity', 10);
             $table->string('do', 10);
-            $table->string('bod5', 10);
+            $table->string('bod', 10);
             $table->string('cod', 10);
             $table->string('nh4', 10);
             $table->string('po4', 10);

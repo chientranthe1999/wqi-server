@@ -3,8 +3,11 @@
 
 namespace App\Services;
 
+use App\Constants\Common;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserService extends BaseService
 {
@@ -20,29 +23,55 @@ class UserService extends BaseService
         $this->model = new User();
     }
 
+    public function _addFilter()
+    {
+        $this->query->where('role', '=', Common::ROLE_USER);
+    }
+
     /**
      * Change user infor
      */
 
-    public function updateUser(Request $r)
+    public function updateUser($id, Request $r)
+    {
+        $user = $this->model->find($id);
+        if (!$user) {
+            // TODO: Can throw exception
+            return false;
+        }
+        $input = $r->only(['name', 'phone', 'email', 'password']);
+
+        $input['password'] = Hash::make($input['password']);
+
+        $user->update($input);
+        return $user;
+    }
+
+    public function disableUser($id)
     {
 
-        // can move to
-        $authId = Auth::user()->id;
-        $authRole = Auth::user()->role;
-        // if(role = 0) || update current user
+        $user = $this->model->find($id);
 
-        $id = $r->input('id');
-
-        if ($r->input('id') == $authId || $authRole == 0) {
-            $input = $r->only(['name', 'phone', 'email', 'password']);
-            $user = $this->model->find($id);
-            if (!$user) {
-                // TODO: Can throw exception
-                return false;
-            }
-            $user->create($input);
-            return $user;
+        if (!$user) {
+            // TODO: Can throw exception
+            return false;
         }
+        $user->status = Common::DISABLE;
+        $user->save();
+        return $user;
+    }
+
+    public function activeUser($id)
+    {
+
+        $user = $this->model->find($id);
+
+        if (!$user) {
+            // TODO: Can throw exception
+            return false;
+        }
+        $user->status = Common::ACTIVE;
+        $user->save();
+        return $user;
     }
 }

@@ -13,10 +13,4 @@ class InforService extends BaseService
     {
         $this->model = new Infor();
     }
-
-    public function store(array $attributes = [], Request $r)
-    {
-
-        // caculate wqi
-    }
 }
