@@ -16,10 +16,10 @@ class CreateDevicesTable extends Migration
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50);
-            $table->tinyInteger('type');
+            $table->tinyInteger('type')->nullable();
             $table->string('lon', 20);
             $table->string('lat', 20);
-            $table->string('location', 10);
+            $table->string('location');
             $table->timestamps();
         });
     }

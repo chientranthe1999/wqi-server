@@ -11,4 +11,8 @@ class Infor extends Model
 
     protected $fillable = ['device_id', 'turbidity', 'ph', 'wqi', 'temperature', 'do', 'bod5', 'cod', 'nh4', 'po4', 'tss', 'coliform'];
 
+    public function devices()
+    {
+        return $this->belongsTo(Device::class, 'device_id');
+    }
 }
