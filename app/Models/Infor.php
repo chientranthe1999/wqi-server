@@ -9,7 +9,7 @@ class Infor extends Model
 {
     public $timestamps = true;
 
-    protected $fillable = ['device_id', 'turbidity', 'ph', 'wqi', 'temperature', 'do', 'bod5', 'cod', 'nh4', 'po4', 'tss', 'coliform'];
+    protected $fillable = ['device_id', 'turbidity', 'ph', 'wqi', 'temperature', 'do', 'bod5', 'cod', 'nh4', 'po4', 'tss', 'coliform', 'bod'];
 
     public function devices()
     {

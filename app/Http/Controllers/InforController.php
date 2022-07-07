@@ -11,11 +11,12 @@ class InforController extends Controller
         parent::__construct($service);
     }
 
-    public function dashboard() {
-        try{
-
-            return $this->respond($this->service->dashboard());
-        } catch(Throwable $e) {
+    public function dashboard()
+    {
+        try {
+            $result = $this->service->dashboard();
+            return $this->respond(['items' => $result]);
+        } catch (Throwable $e) {
             return $this->respondWithError(ApiCodes::UNAUTHENTICATED, ApiCodes::UNAUTHENTICATED, $e->getMessage());
         }
     }

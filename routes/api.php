@@ -54,6 +54,8 @@ Route::middleware('auth:api')->group(function () {
         Route::put('/{id}', [ArticleController::class, 'update']);
         Route::delete('/{id}', [ArticleController::class, 'destroy']);
     });
+
+    Route::get('/dashboard', [InforController::class, 'dashboard']);
 });
 
 Route::prefix('infors')->group(function () {

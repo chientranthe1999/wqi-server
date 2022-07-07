@@ -77,7 +77,6 @@ class UserController extends Controller
         $authId = Auth::id();
         $authRole = Auth::user()->role;
 
-        // if(role = 0) || update current user
         if ($id == $authId || $authRole == Common::ROLE_ADMIN) {
             $result = $this->service->updateUser($id, $r);
             if ($result) {

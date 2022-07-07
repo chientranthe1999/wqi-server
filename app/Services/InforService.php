@@ -17,18 +17,27 @@ class InforService extends BaseService
         $this->model = new Infor();
     }
 
-    public function dashboard() {
-        $news = Infor::firstOrFail()->with('devices');
-
-        $devices = Device::limit(4);
-
-        $infors = Infor::select('wqi')->limit(20);
+    public function _addFilter()
+    {
+        $this->query->with('devices');
+    }
 
 
-        return [
+    public function dashboard()
+    {
+        $news = Infor::with('devices')->orderBy('created_at', 'desc')->firstOrFail();
+
+        $devices = Device::limit(4)->get();
+
+        $infors = Infor::select(['wqi', 'created_at'])->limit(20)->get();
+
+
+        $result =  [
             'newest' => $news,
             'devices' => $devices,
             'infors' => $infors
         ];
+
+        return $result;
     }
 }
