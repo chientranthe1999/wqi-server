@@ -29,7 +29,9 @@ class InforService extends BaseService
 
         $devices = Device::limit(4)->get();
 
-        $infors = Infor::select(['wqi', 'created_at'])->limit(20)->get();
+        $infors = Infor::with('devices')->select(['wqi', 'created_at'])->limit(20)->orderBy('created_at', 'desc')->whereIn('device_id', function ($q) {
+            $q->select('id')->from('devices');
+        })->get();
 
 
         $result =  [

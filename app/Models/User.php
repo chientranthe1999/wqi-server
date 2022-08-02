@@ -8,7 +8,7 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-     use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable;
 
     public $timestamps = true;
     /**
@@ -20,9 +20,15 @@ class User extends Authenticatable
         'password'
     ];
 
-    protected $fillable = ['name', 'phone', 'email', 'password'];
+    protected $fillable = ['name', 'phone', 'email', 'password', 'device_id'];
 
-    public function articles() {
+    public function articles()
+    {
         return $this->hasMany(Article::Class);
+    }
+
+    public function devices()
+    {
+        return $this->hasOne(Device::Class);
     }
 }

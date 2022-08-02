@@ -26,12 +26,13 @@ class AuthService extends BaseService
 
     public function register(Request $r)
     {
-        $input = $r->only(['name', 'phone', 'email', 'password']);
+        $input = $r->only(['name', 'phone', 'email', 'password', 'device_id']);
         $user = $this->model->create([
             'phone' => $input['phone'],
             'role' => Common::ROLE_USER,
             'name' => $input['name'],
             'email' => $input['email'],
+            'device_id' => $input['device_id'],
             'password' => Hash::make($input['password'])
         ]);
 

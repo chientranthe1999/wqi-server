@@ -39,7 +39,7 @@ class UserService extends BaseService
             // TODO: Can throw exception
             return false;
         }
-        $input = $r->only(['name', 'phone', 'email', 'password']);
+        $input = $r->only(['name', 'phone', 'email', 'password', 'device_id']);
 
         $input['password'] = Hash::make($input['password']);
 
