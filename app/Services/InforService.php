@@ -5,9 +5,7 @@ namespace App\Services;
 use App\Models\Infor;
 use App\Models\User;
 use App\Models\Device;
-
 use Illuminate\Http\Request;
-
 
 class InforService extends BaseService
 {
@@ -23,20 +21,17 @@ class InforService extends BaseService
     }
 
 
-    public function dashboard()
+    public function dashboard($r)
     {
-        $news = Infor::with('devices')->orderBy('created_at', 'desc')->firstOrFail();
+        $deviceId = $r->get('device_id');
 
-        $devices = Device::limit(4)->get();
+        $news = Infor::with('devices')->where('device_id', '=', $deviceId)->orderBy('created_at', 'desc')->firstOrFail();
 
-        $infors = Infor::with('devices')->select(['wqi', 'created_at'])->limit(20)->orderBy('created_at', 'desc')->whereIn('device_id', function ($q) {
-            $q->select('id')->from('devices');
-        })->get();
+        $infors = Infor::where('device_id', '=', $deviceId)->select(['wqi', 'created_at'])->limit(20)->orderBy('created_at', 'desc')->get();
 
 
         $result =  [
             'newest' => $news,
-            'devices' => $devices,
             'infors' => $infors
         ];
 

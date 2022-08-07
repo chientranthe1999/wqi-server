@@ -8,6 +8,9 @@ use App\Services\UserService;
 
 use Laravel\Passport\TokenRepository;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Request;
+
 
 class UserController extends Controller
 {

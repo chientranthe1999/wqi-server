@@ -7,6 +7,8 @@ use App\Constants\Common;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Model;
+
 
 
 class UserService extends BaseService
@@ -25,7 +27,7 @@ class UserService extends BaseService
 
     public function _addFilter()
     {
-        $this->query->where('role', '=', Common::ROLE_USER);
+        $this->query->where('role', '=', Common::ROLE_USER)->with('devices:id,name,location');
     }
 
     /**

@@ -29,6 +29,6 @@ class User extends Authenticatable
 
     public function devices()
     {
-        return $this->hasOne(Device::Class);
+        return $this->hasOne(Device::Class, 'id', 'device_id');
     }
 }

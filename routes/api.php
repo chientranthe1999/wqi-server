@@ -40,7 +40,6 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::prefix('devices')->group(function () {
-        Route::get('/', [DeviceController::class, 'index']);
         Route::post('/', [DeviceController::class, 'store']);
         Route::get('/{id}', [DeviceController::class, 'show']);
         Route::put('/{id}', [DeviceController::class, 'update']);
@@ -48,14 +47,16 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::prefix('articles')->group(function () {
-        Route::get('/', [ArticleController::class, 'index']);
         Route::post('/', [ArticleController::class, 'store']);
-        Route::get('/{id}', [ArticleController::class, 'show']);
+
         Route::put('/{id}', [ArticleController::class, 'update']);
         Route::delete('/{id}', [ArticleController::class, 'destroy']);
     });
 });
 Route::get('/dashboard', [InforController::class, 'dashboard']);
+Route::get('/devices', [DeviceController::class, 'index']);
+Route::get('/articles', [ArticleController::class, 'index']);
+Route::get('/articles/{id}', [ArticleController::class, 'show']);
 
 Route::prefix('infors')->group(function () {
     Route::get('/', [InforController::class, 'index']);
