@@ -35,16 +35,15 @@ class UserService extends BaseService
 
     public function updateUser($id, Request $r)
     {
-        $user = $this->model->find($id);
-        if (!$user) {
-            // TODO: Can throw exception
-            return false;
-        }
+        $user = $this->model->findOrFail($id);
+
         $input = $r->only(['name', 'phone', 'email', 'password', 'device_id']);
 
-        $input['password'] = Hash::make($input['password']);
+        if (isset($input['password'])) {
+            $input['password'] = Hash::make($input['password']);
+        }
 
-        $user->update($input);
+        $user->fill($input)->save();
         return $user;
     }
 

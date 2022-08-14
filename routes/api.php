@@ -34,8 +34,8 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::put('/disable/{id}', [UserController::class, 'disable']);
         Route::put('/active/{id}', [UserController::class, 'active']);
-        Route::put('/update/{id}', [UserController::class, 'update']);
-        // Route::put('/{id}', [DeviceController::class, 'update']);
+        Route::put('/{id}', [UserController::class, 'update']);
+        Route::get('/{id}', [UserController::class, 'show']);
         // Route::delete('/{id}', [DeviceController::class, 'destroy']);
     });
 
@@ -48,11 +48,12 @@ Route::middleware('auth:api')->group(function () {
 
     Route::prefix('articles')->group(function () {
         Route::post('/', [ArticleController::class, 'store']);
-
         Route::put('/{id}', [ArticleController::class, 'update']);
         Route::delete('/{id}', [ArticleController::class, 'destroy']);
     });
 });
+
+// no need auth
 Route::get('/dashboard', [InforController::class, 'dashboard']);
 Route::get('/devices', [DeviceController::class, 'index']);
 Route::get('/articles', [ArticleController::class, 'index']);

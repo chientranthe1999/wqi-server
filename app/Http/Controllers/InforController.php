@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\InforExport;
 use App\Services\InforService;
 use Illuminate\Http\Request;
 
@@ -22,4 +23,9 @@ class InforController extends Controller
             return $this->respondWithError(ApiCodes::UNAUTHENTICATED, ApiCodes::UNAUTHENTICATED, $e->getMessage());
         }
     }
+
+    // public function export()
+    // {
+    //     return Excel::download(new InforExport(), 'disney.xlsx');
+    // }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Services\ArticleService;
-use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends Controller
 {
@@ -13,7 +13,7 @@ class ArticleController extends Controller
         parent::__construct($service);
     }
 
-    public function show($id)
+    public function show($id): Response
     {
         $result = $this->service->show($id, ['users:id,name']);
         return $this->respond($result);

@@ -143,4 +143,32 @@ class Controller extends BaseController
             throw $e;
         }
     }
+
+    public function show(Request $r): Response
+    {
+        try {
+            $id = $r->route('id');
+            return $this->respond($this->service->show($id));
+        } catch (\Exception $e) {
+            return $this->respondWithError(ApiCodes::SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
+    }
+
+    public function update(Request $r): Response
+    {
+        try {
+            return $this->respond($this->service->update((int)$r->route('id'), $r->input()));
+        } catch (\Exception $e) {
+            return $this->respondWithError(ApiCodes::SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
+    }
+
+    public function destroy(Request $r): Response
+    {
+        try {
+            return $this->respond($this->service->destroy((int)$r->route('id')));
+        } catch (\Exception $e) {
+            return $this->respondWithError(ApiCodes::SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
+    }
 }

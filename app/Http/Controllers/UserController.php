@@ -75,10 +75,11 @@ class UserController extends Controller
         return $this->respondWithError(ApiCodes::BAD_REQUEST, ApiCodes::BAD_REQUEST);
     }
 
-    public function update($id, Request $r)
+    public function update(Request $r): Response
     {
         $authId = Auth::id();
         $authRole = Auth::user()->role;
+        $id = $r->route('id');
 
         if ($id == $authId || $authRole == Common::ROLE_ADMIN) {
             $result = $this->service->updateUser($id, $r);

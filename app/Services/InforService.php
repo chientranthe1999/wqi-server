@@ -15,9 +15,12 @@ class InforService extends BaseService
         $this->model = new Infor();
     }
 
-    public function _addFilter()
+    public function _addFilter($r)
     {
         $this->query->with('devices');
+        if (isset($r->device_id)) {
+            $this->query->where('device_id', $r->device_id);
+        }
     }
 
 

@@ -21,7 +21,7 @@ class ArticleService extends BaseService
         $this->model = new Article();
     }
 
-    public function _addFilter()
+    public function _addFilter($r)
     {
         $this->query->with('users:id,name');
     }

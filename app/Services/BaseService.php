@@ -56,7 +56,7 @@ abstract class BaseService
     public function index(Request $r)
     {
         if (method_exists($this, '_addFilter')) {
-            $this->_addFilter();
+            $this->_addFilter($r);
         }
         $this->_addDefaultFilter($r);
         if ($r->input('limit')) {
@@ -72,7 +72,7 @@ abstract class BaseService
      * @param array $appends
      * @return Model
      */
-    public function show(int $id, array $relations = [], array $appends = [], bool $withTrashed = false): Model
+    public function show(string $id, array $relations = [], array $appends = [], bool $withTrashed = false): Model
     {
         $query = $this->query;
         if ($withTrashed) {
@@ -130,24 +130,13 @@ abstract class BaseService
      * @throws ModelNotFoundException
      * @throws Exception
      */
-    public function update($parent, array $attributes)
+    public function update($id, array $attributes)
     {
-        if (is_integer($parent)) {
-            $parent = $this->query()->findOrFail($parent);
+        if ($id) {
+            $parent = $this->query->findOrFail($id);
         }
+        dd($attributes);
         $parent->fill($attributes);
-        $relations = [];
-
-        foreach (array_filter($attributes, [$this, '_isRelation']) as $key => $models) {
-            if (method_exists($parent, $relation = Str::camel($key))) {
-                $relations[] = $relation;
-                $this->_syncRelations($parent->$relation(), $models);
-            }
-        }
-        if (count($relations)) {
-            $parent->load($relations);
-        }
-
         return $parent->push() ? $parent : false;
     }
 
