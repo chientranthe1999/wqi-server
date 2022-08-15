@@ -135,7 +135,6 @@ abstract class BaseService
         if ($id) {
             $parent = $this->query->findOrFail($id);
         }
-        dd($attributes);
         $parent->fill($attributes);
         return $parent->push() ? $parent : false;
     }

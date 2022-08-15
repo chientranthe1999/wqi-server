@@ -15,11 +15,11 @@ class DeviceService extends BaseService
         $this->model = new Device();
     }
 
-    public function _addFilter($r)
-    {
-        $user = Auth::user();
-        if ($user && $user->role == Common::ROLE_USER) {
-            $this->query->where('user_id', $user->id);
-        }
-    }
+    // public function _addFilter($r)
+    // {
+    //     $user = Auth::user();
+    //     if ($user && $user->role == Common::ROLE_USER) {
+    //         $this->query->where('user_id', $user->id);
+    //     }
+    // }
 }
